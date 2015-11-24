@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Main",
   "main": "app.js",
+  "engines": {
+    "node": "4.2.1"
+  }
   "author": {
     "name": "Umeriftikhar",
     "email": ""
