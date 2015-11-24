@@ -26,5 +26,12 @@
     "cookie-parser": "~1.0.0",
     "method-override": "~1.0.0",
     "express-session": "~1.0.0" 
+  },
+  "engines": {
+    "node": "4.2.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UmerIftikhar/Server.git"
   }
 }
