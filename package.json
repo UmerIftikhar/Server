@@ -28,7 +28,7 @@
     "express-session": "~1.0.0" 
   },
   "engines": {
-    "node": "4.2.x"
+    "node": "0.12.7"
   },
   "repository": {
     "type": "git",
