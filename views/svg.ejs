@@ -1,0 +1,193 @@
+<html>
+
+<head>
+<link href="styles/mystyle.css" rel="stylesheet" type="text/css" id="my_theme">
+</head>
+
+
+
+
+<body onload="getUserRecords()">
+
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="js/controllers/d3.js"></script>
+<script src="js/controllers/animation.js"></script>
+<script src="js/controllers/downloadfile.js"></script>
+<script src="js/controllers/email.js"></script>
+<script src="js/controllers/populatetable.js"></script>
+<script src="js/controllers/userhistory.js"></script>
+<script src="js/controllers/paging.js"></script>
+<script>var loggedinUser = <%- JSON.stringify(user) %>;</script>
+<script>var userCommands = {};</script>
+<script>var pager = new Pager('myTable', 5);</script>
+
+<br/>
+
+
+<div  style="float:right">
+<strong>email</strong>: <%= user %><br>
+</div>
+<br>
+<div style="float:right">
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+</div>
+
+
+
+<h1>Work Station 7</h1>
+<h1>		Load & Store Pallet</h1>
+
+			
+<!-- <a href=sendUserEmail  class="btn btn-default"><span class="fa fa-user"></span>Request Data Through Email </a> -->
+<button type="button" onclick="sendEmailToUser()">Request Email</button>
+<!-- <button type="button" onclick="getUserRecords()">Show History</button> -->
+<button type="button" onclick="DownloadJSON2CSV()">Download CSV</button>
+<br/>
+<br/>
+
+<table id="myTable"  border="1" style="width:50%">
+  <tr>
+    <th>commands</th>
+    <th>sampledata1</th> 
+    <th>sampledata2</th>
+  </tr>
+
+</table> 
+<div id="pageNavPosition"></div>
+
+<svg  x="0" y="0" width="1500" height="350">
+
+
+
+<!-- Work Station7------------------------------------------------------------------------------------->
+			<g id="WS7" transform="rotate(180 0 0) translate(-760 -300)">	<!--  Moves it up and down-->
+			
+				<rect x="105" y="60" width="200" height="40" class="CNV_Filling"></rect>
+				<rect x="305" y="60" width="155" height="40" class="CNV_Filling"></rect>
+				<line x1="120" y1="83" x2="80" y2="43" class="CNV_Filling"></line>
+				<rect x="70" y="20" width="40" height="35" class="CNV_Filling"></rect>	
+			
+				<rect id="WS7_WorkPlace" x="120" y="100" width="320" height="160" style="fill:#ff00ff;stroke-width:2;stroke:#000000;fill-opacity:.1"></rect>
+			
+				<!-- Main Conveyor--> 
+				<line id="WS7_MC1" x1="120" y1="60" x2="440" y2="60" style="stroke:#ff0000;stroke-width:3"></line> 
+				<line id="WS7_MC2" x1="120" y1="100" x2="440" y2="100" style="stroke:#ff0000;stroke-width:3"></line>
+				<!-- Connections WS7~WS8-->
+				<line id="WS7_CC1" x1="120" y1="60" x2="110" y2="50" style="stroke:#ff0000;stroke-width:3"></line>
+				<path id="WS7_CC2" d="M120,100  A50,50 0 0,1, 70,50" class="CNV_Filling"></path>
+				
+				
+				
+				<!--  <line id="WS6_CC1" x1="440" y1="60" x2="460" y2="50" style="stroke:#ff0000;stroke-width:3"></line>  -->
+				<!--  <line id="WS6_CC2" x1="440" y1="100" x2="460" y2="90" style="stroke:#ff0000;stroke-width:3"></line>  -->
+				
+
+				
+				<!-- Sensors-->
+				<circle id="WS7_Sensor2" cx="325" cy="50" r="6" class="Presence_Sensor_OFF"></circle>
+				<circle id="WS7_Sensor3" cx="280" cy="50" r="6" class="Presence_Sensor_OFF"></circle>
+				<!-- Stopper -->
+				<polygon id="WS7_Stopper2" points="325,100 320,110 330,110" class="Stopper_ON"></polygon>
+				<polygon id="WS7_Stopper3" points="280,100 285 110 275,110" class="Stopper_ON"></polygon>
+				
+				<!-- Sensors-->
+				<polygon id="WS8_Stopper1" points="70,45 60,40 60,50" class="Stopper_ON"></polygon>	
+				<rect id="WS8_RFSensor" x="130" y="37.5" width="15" height="15" class="RFID_Sensor_OFF"></rect>
+				<!-- Stopper -->
+				<circle id="WS8_Sensor1" cx="120" cy="45" r="6" class="Presence_Sensor_OFF"></circle>	
+				<path id="WS6_CC2" d="M440,100  A50,50 0 0,0, 490,60" class="CNV_Filling"></path>
+				<line x1="440" y1="83" x2="478" y2="50" class="CNV_Filling"></line>
+				
+				
+				<!-- Pallets-->
+				<g id="WS7_PalletZone2" transform="translate(319 67)" width="26" height="25">
+					<rect id="WS7_PalletZone2_Pallet" x="0" y="0" width="26" height="25" style="fill: rgb(0, 0, 0); stroke-width: 2px; stroke: rgb(0, 0, 0); visibility: hidden;" visibility="hidden"></rect>
+					<rect id="WS7_PalletZone2_Paper" x="2" y="4" width="22" height="17" style="fill: rgb(255, 255, 255); stroke-width: 1px; stroke: none; visibility: hidden;" visibility="hidden"></rect>
+					<rect id="WS7_PalletZone2_Cover" x="5" y="8" width="16" height="9" style="fill: rgb(0, 0, 0); stroke-width: 2px; stroke: none; visibility: hidden;" visibility="hidden"></rect>
+					<rect id="WS7_PalletZone2_Screen" x="6" y="9" width="5" height="7" style="fill: rgb(0, 0, 0); stroke-width: 1px; stroke: none; visibility: hidden;" visibility="hidden"></rect>
+					<rect id="WS7_PalletZone2_Keyboard" x="13" y="9" width="7" height="7" style="fill: rgb(0, 0, 0); stroke-width: 1px; stroke: none; visibility: hidden;" visibility="hidden"></rect>
+				</g>
+				<g id="WS7_PalletZone3" transform="translate(273 67)" width="26" height="25">
+					<rect id="WS7_PalletZone3_Pallet" x="0" y="0" width="26" height="25" style="fill: rgb(0, 0, 0); stroke-width: 2px; stroke: rgb(0, 0, 0); visibility: hidden;" visibility="hidden"></rect>
+					<rect id="WS7_PalletZone3_Paper" x="2" y="4" width="22" height="17" style="fill: rgb(255, 255, 255); stroke-width: 1px; stroke: none; visibility: hidden;" visibility="hidden"></rect>
+					<rect id="WS7_PalletZone3_Cover" x="5" y="8" width="16" height="9" style="fill: rgb(0, 0, 0); stroke-width: 2px; stroke: none; visibility: hidden;" visibility="hidden"></rect>
+					<rect id="WS7_PalletZone3_Screen" x="6" y="9" width="5" height="7" style="fill: rgb(0, 0, 0); stroke-width: 1px; stroke: none; visibility: hidden;" visibility="hidden"></rect>
+					<rect id="WS7_PalletZone3_Keyboard" x="13" y="9" width="7" height="7" style="fill: rgb(0, 0, 0); stroke-width: 1px; stroke: none; visibility: hidden;" visibility="hidden"></rect>
+				</g>
+				
+				<rect id="WS7_PalletBuffer1" x="390" y="120" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect> <!--Here hidden represents Pallets-->
+				<rect id="WS7_PalletBuffer2" x="390" y="160" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer3" x="390" y="200" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer4" x="350" y="120" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer5" x="350" y="160" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer6" x="350" y="200" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer7" x="310" y="120" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer8" x="310" y="160" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer9" x="310" y="200" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+			
+				<rect id="WS7_PalletBuffer10" x="144" y="120" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer11" x="144" y="160" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer12" x="144" y="200" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer13" x="184" y="120" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer14" x="184" y="160" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer15" x="184" y="200" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer16" x="224" y="120" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer17" x="224" y="160" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+				<rect id="WS7_PalletBuffer18" x="224" y="200" width="26" height="25" transform="rotate(0 300 250)" style="fill:#000000;stroke-width:2;stroke:#000000" visibility="hidden"></rect>
+						
+				<line x1="382.5" y1="115" x2="382.5" y2="230" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="342.5" y1="115" x2="342.5" y2="230" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="302.5" y1="115" x2="302.5" y2="230" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="422.5" y1="115" x2="422.5" y2="230" style="stroke:#000000;stroke-width:2"></line>
+				<line x1="422.5" y1="115" x2="302.5" y2="115" style="stroke:#000000;stroke-width:2"></line>  
+				<line x1="422.5" y1="152.5" x2="302.5" y2="152.5" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="422.5" y1="192" x2="302.5" y2="192" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="422.5" y1="230" x2="302.5" y2="230" style="stroke:#000000;stroke-width:2"></line>	
+					
+				<line x1="137.5" y1="115" x2="137.5" y2="230" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="177.5" y1="115" x2="177.5" y2="230" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="217.5" y1="115" x2="217.5" y2="230" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="257.5" y1="115" x2="257.5" y2="230" style="stroke:#000000;stroke-width:2"></line>
+				<line x1="137.5" y1="115" x2="257.5" y2="115" style="stroke:#000000;stroke-width:2"></line>  
+				<line x1="137.5" y1="152.5" x2="257.5" y2="152.5" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="137.5" y1="192" x2="257.5" y2="192" style="stroke:#000000;stroke-width:2"></line> 
+				<line x1="137.5" y1="230" x2="257.5" y2="230" style="stroke:#000000;stroke-width:2"></line>
+			
+			<!-- Robot Arm -->
+			
+				<line id="WS7_Arm1" x1="280" y1="180" x2="225" y2="155" style="stroke:#ff7f00;stroke-width:10"></line>
+				<line id="WS7_Arm2" x1="225" y1="155" x2="280" y2="130" style="stroke:#ff7f00;stroke-width:10"></line>
+				<circle id="WS7_Joint1" cx="280" cy="180" r="5" stroke="black" stroke-width="3" fill="orange"></circle>
+				<circle id="WS7_Joint3" cx="225" cy="155" r="5" stroke="black" stroke-width="3" fill="orange"></circle>
+				<circle id="WS7_Joint2" cx="280" cy="130" r="5" stroke="black" stroke-width="3" fill="orange" style="fill: rgb(255, 127, 0);"></circle> 
+			
+			</g>
+	
+</svg>
+
+		
+<div style="width: 25%;height: 120px;border: 2px solid #a1a1a1; padding: 20px;  background: #dddddd; border-radius: 25px;">
+			
+			<div style=" height: 40px; width: 400px; ">
+					<text style="font-family:Verdana;font-size:150%;width: 70%;height: 100%">WS7</text>
+			</div>
+			
+			<div style=" height: 40px;">
+
+				<button onclick="add_pallet1()">Load Pallet</button><br>
+				<button onclick="move_pallet23()">2->3</button>	
+				<button onclick="move_pallet35()">3->5</button><br>
+				<button onclick="storepallet()">Move to 8</button><br>	
+			</div>
+		
+			
+			
+</div>
+
+
+
+<!-- <script type="text/javascript"  src="js/controllers/Fetch-Controller.js"><script/> -->
+		
+</body>
+</html>
