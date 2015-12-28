@@ -87,7 +87,7 @@ app.post('/sendemail', isLoggedIn, function(request,response){
 		//host: 'smtp.yourprovider.org',		//yourprovider = > gmail
         auth: {
             user: "uiftikhar1@gmail.com",
-            pass: "Xyz#12345"
+            pass: ""
         }
     });
 	
