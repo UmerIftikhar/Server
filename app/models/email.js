@@ -6,7 +6,7 @@ var mailer = require("nodemailer");
 		//host: 'smtp.yourprovider.org',		//yourprovider = > gmail
         auth: {
             user: "uiftikhar1@gmail.com",
-            pass: "Xyz#12345"
+            pass: ""
         }
     });
 
